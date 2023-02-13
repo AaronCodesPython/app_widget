@@ -1,27 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:home_widget/home_widget.dart';
+import "./centerTextcomponent.dart";
+import "./customBottomSheet.dart";
+import 'settingsScreen_template.dart';
+import "./HelpScreend.dart";
+
+import 'package:flutter/material.dart';
+
+import "./AskBirthDay.dart" as AB;
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  HomeWidget.registerBackgroundCallback(backgroundCallback);
   runApp(const MyApp());
-}
-
-// Called when Doing Background Work initiated from Widget
-Future<void> backgroundCallback(Uri? uri) async {
-  if (uri?.host == 'updatecounter') {
-    int counter = 0;
-    await HomeWidget.getWidgetData<int>('_counter', defaultValue: 0)
-        .then((value) {
-      counter = value!;
-      counter++;
-    });
-    await HomeWidget.saveWidgetData<int>('_counter', counter);
-    await HomeWidget.updateWidget(
-        //this must the class name used in .Kt
-        name: 'HomeScreenWidgetProvider',
-        iOSName: 'HomeScreenWidgetProvider');
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -29,80 +17,67 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Stack(textDirection: TextDirection.ltr, children: [
+      MaterialApp(
+        title: 'Days left',
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.black87,
+            textTheme: const TextTheme(
+                displayMedium: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+                displayLarge: TextStyle(
+                    fontSize: 52,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white))),
+
+        initialRoute: '/', // default is '/'
+        routes: {
+          '/': (ctx) => const mainComponent(title: 'Days left'),
+          SettingsScreen.routeName: (ctx) => SettingsScreen(),
+          HelpScreen.routeName: (ctx) => HelpScreen()
+        },
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    ]);
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class mainComponent extends StatefulWidget {
+  const mainComponent({super.key, required this.title});
   final String title;
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   @override
-  MyHomePageState createState() => MyHomePageState();
+  State<mainComponent> createState() => _MyHomePageState();
 }
 
-class MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
+class _MyHomePageState extends State<mainComponent> {
   @override
   void initState() {
     super.initState();
-    HomeWidget.widgetClicked.listen((Uri? uri) => loadData());
-    loadData(); // This will load data from widget every time app is opened
-  }
-
-  void loadData() async {
-    await HomeWidget.getWidgetData<int>('_counter', defaultValue: 0)
-        .then((value) {
-      _counter = value!;
-    });
-    setState(() {});
-  }
-
-  Future<void> updateAppWidget() async {
-    await HomeWidget.saveWidgetData<int>('_counter', _counter);
-    await HomeWidget.updateWidget(
-        name: 'HomeScreenWidgetProvider', iOSName: 'HomeScreenWidgetProvider');
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-    updateAppWidget();
   }
 
   @override
   Widget build(BuildContext context) {
+    final _scaffoldKey = GlobalKey<ScaffoldState>();
+    AB.BirtdaySet(context)
+        .then((value) => value ? false : AB.AskBirtday(context));
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              CustomBottomWidget(context);
+            },
+            icon: Icon(Icons.more_horiz),
+          ),
+        ],
+        backgroundColor: Colors.black87,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), 
+        child: TimerWidget(),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

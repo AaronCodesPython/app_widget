@@ -1,5 +1,4 @@
-package com.flutterjunction.homescreen_widget  // your package name
-
+package com.flutterjunction.homescreen_widget   // your package name
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.SharedPreferences
@@ -9,8 +8,9 @@ import es.antonborri.home_widget.HomeWidgetBackgroundIntent
 import es.antonborri.home_widget.HomeWidgetLaunchIntent
 import es.antonborri.home_widget.HomeWidgetProvider
 
+
 class HomeScreenWidgetProvider : HomeWidgetProvider() {
-     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray, widgetData: SharedPreferences) {
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray, widgetData: SharedPreferences) {
         appWidgetIds.forEach { widgetId ->
             val views = RemoteViews(context.packageName, R.layout.widget_layout).apply {
 
@@ -18,21 +18,21 @@ class HomeScreenWidgetProvider : HomeWidgetProvider() {
                 val pendingIntent = HomeWidgetLaunchIntent.getActivity(context,
                         MainActivity::class.java)
                 setOnClickPendingIntent(R.id.widget_root, pendingIntent)
+                //println("ABCDE ${widgetData.getFloat("yearsLeft", 20)}");
+                val yearLeftInt = widgetData.getInt("yearLeftInt", 20)
 
-                val counter = widgetData.getInt("_counter", 0)
+                var yearsLeftText = "Your yearLeftInt value2 is: $yearLeftInt"
 
-                var counterText = "Your counter value is: $counter"
+                
 
-                if (counter == 0) {
-                    counterText = "You have not pressed the counter button"
-                }
+                setTextViewText(R.id.tv_yearsLeft, yearsLeftText)
+                //setTextViewText(150, "120lol")
 
-                setTextViewText(R.id.tv_counter, counterText)
 
                 // Pending intent to update counter on button click
                 val backgroundIntent = HomeWidgetBackgroundIntent.getBroadcast(context,
-                        Uri.parse("myAppWidget://updatecounter"))
-                setOnClickPendingIntent(R.id.bt_update, backgroundIntent)
+                        Uri.parse("myAppWidget://updateyearLeftInt"))
+                //setOnClickPendingIntent(R.id.bt_update, backgroundIntent)
             }
             appWidgetManager.updateAppWidget(widgetId, views)
         }
