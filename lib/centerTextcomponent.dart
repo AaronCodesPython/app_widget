@@ -9,20 +9,25 @@ import "./main.dart" as MAIN;
 import 'package:home_widget/home_widget.dart';
 
 double? yearsLeft;
-int? yearLeftInt;
 
 //TODO: make it work for double values
 //ToDO: make background Callback work
+void callbackDispatcher() {
+  WidgetsFlutterBinding.ensureInitialized();
+  print("Our background job ran!");
+}
 
 Future<void> backgroundCallback(Uri? uri) async {
-  print("backgroundCallback");
+  //print("backgroundCallback");
   if (uri?.host == 'updateyearsLeft') {
-    await HomeWidget.getWidgetData<int>('yearsLeftInt', defaultValue: 0)
+    // print("reached2");
+    double _val;
+    await HomeWidget.getWidgetData<double>('yearsLeft', defaultValue: 0)
         .then((value) {
-      yearLeftInt = value!;
-      print("set years left to : $value");
+      _val = value!;
+      // print("set years left to : $value");
     });
-    await HomeWidget.saveWidgetData<int>('yearLeftInt', yearLeftInt);
+    await HomeWidget.saveWidgetData<double>('yearsLeft', yearsLeft);
     await HomeWidget.updateWidget(
         //this must the class name used in .Kt
         name: 'HomeScreenWidgetProvider',
@@ -40,23 +45,12 @@ class _TimerWidgetState extends State<TimerWidget> {
   @override
   void initState() {
     super.initState();
-    HomeWidget.widgetClicked.listen((Uri? uri) => loadData());
-    loadData(); // This will load data from widget every time app is opened
-  }
-
-  void loadData() async {
-    print("loadData");
-    await HomeWidget.getWidgetData<int>('yearLeftInt', defaultValue: 0)
-        .then((value) {
-      yearLeftInt = value;
-      //updateAppWidget();
-    });
-    setState(() {});
   }
 
   Future<void> updateAppWidget() async {
-    print("updateAppWidget");
-    await HomeWidget.saveWidgetData<int>('yearLeftInt', yearLeftInt);
+    //print("updateAppWidget");
+    await HomeWidget.saveWidgetData<String>('yearsLeft', yearsLeft.toString());
+    //print("yearsLeft:$yearsLeft");
     await HomeWidget.updateWidget(
         name: 'HomeScreenWidgetProvider', iOSName: 'HomeScreenWidgetProvider');
   }
@@ -68,9 +62,7 @@ class _TimerWidgetState extends State<TimerWidget> {
       idk().then((value) {
         setState(() {
           yearsLeft = double.parse(value[0]);
-          //print(value[0]);
-
-          yearLeftInt = int.parse((value[0].split("."))[0]);
+          //print(value[0])
 
           percentDone = value[1];
         });

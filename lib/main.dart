@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import "./centerTextcomponent.dart";
+import 'package:home_widget/home_widget.dart';
+import "./centerTextcomponent.dart" as CTC;
 import "./customBottomSheet.dart";
 import 'settingsScreen_template.dart';
 import "./HelpScreend.dart";
@@ -10,6 +11,8 @@ import "./AskBirthDay.dart" as AB;
 
 void main() {
   runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized(); //NEW
+  //HomeWidget.registerBackgroundCallback(CTC.backgroundCallback);
 }
 
 class MyApp extends StatelessWidget {
@@ -76,7 +79,7 @@ class _MyHomePageState extends State<mainComponent> {
         backgroundColor: Colors.black87,
       ),
       body: Center(
-        child: TimerWidget(),
+        child: CTC.TimerWidget(),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
