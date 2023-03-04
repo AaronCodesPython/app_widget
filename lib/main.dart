@@ -9,10 +9,18 @@ import 'package:flutter/material.dart';
 
 import "./AskBirthDay.dart" as AB;
 
-void main() {
-  runApp(const MyApp());
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+
+void fireAlarm() {
+  print("Fired Alarm at ${DateTime.now()}");
+}
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //NEW
   //HomeWidget.registerBackgroundCallback(CTC.backgroundCallback);
+  await AndroidAlarmManager.initialize();
+  await AndroidAlarmManager.periodic(Duration(seconds: 60), 0, CTC.UPDATE);
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

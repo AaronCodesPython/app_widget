@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -9,31 +10,7 @@ import "./main.dart" as MAIN;
 import 'package:home_widget/home_widget.dart';
 
 double? yearsLeft;
-
-//TODO: make it work for double values
-//ToDO: make background Callback work
-void callbackDispatcher() {
-  WidgetsFlutterBinding.ensureInitialized();
-  print("Our background job ran!");
-}
-
-Future<void> backgroundCallback(Uri? uri) async {
-  //print("backgroundCallback");
-  if (uri?.host == 'updateyearsLeft') {
-    // print("reached2");
-    double _val;
-    await HomeWidget.getWidgetData<double>('yearsLeft', defaultValue: 0)
-        .then((value) {
-      _val = value!;
-      // print("set years left to : $value");
-    });
-    await HomeWidget.saveWidgetData<double>('yearsLeft', yearsLeft);
-    await HomeWidget.updateWidget(
-        //this must the class name used in .Kt
-        name: 'HomeScreenWidgetProvider',
-        iOSName: 'HomeScreenWidgetProvider');
-  }
-}
+bool BackgroundRunning = false;
 
 class TimerWidget extends StatefulWidget {
   @override
@@ -48,29 +25,36 @@ class _TimerWidgetState extends State<TimerWidget> {
   }
 
   Future<void> updateAppWidget() async {
-    //print("updateAppWidget");
     await HomeWidget.saveWidgetData<String>('yearsLeft', yearsLeft.toString());
     //print("yearsLeft:$yearsLeft");
     await HomeWidget.updateWidget(
         name: 'HomeScreenWidgetProvider', iOSName: 'HomeScreenWidgetProvider');
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final mediaQueryData = MediaQuery.of(context);
+  void UPDATEWIDGET(double? valueX) {
     if (mounted) {
       idk().then((value) {
         setState(() {
-          yearsLeft = double.parse(value[0]);
+          if (valueX == null) {
+            yearsLeft = valueX;
+          } else {
+            yearsLeft = double.parse(value[0]);
+          }
+
           //print(value[0])
 
           percentDone = value[1];
         });
         updateAppWidget();
+
         //print(MAIN.yearsLeft);
       });
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    UPDATEWIDGET(null);
     return Container(
       child: Column(
         children: [
@@ -91,7 +75,7 @@ class _TimerWidgetState extends State<TimerWidget> {
               : SizedBox(
                   height: 0,
                   width: 0,
-                )
+                ),
         ],
       ),
     );
@@ -122,7 +106,5 @@ class _TimerWidgetState extends State<TimerWidget> {
       ((TimeLeft / 31536000000).toStringAsFixed(8)),
       (100 - ((TimeLeft / wholetime) * 100)).toStringAsFixed(7)
     ];
-
-    return [];
   }
 }

@@ -1,0 +1,2 @@
+double? yearsLeft;
+String? percentDone;

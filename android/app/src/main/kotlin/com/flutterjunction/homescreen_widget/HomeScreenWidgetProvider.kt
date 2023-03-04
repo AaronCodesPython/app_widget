@@ -13,7 +13,7 @@ class HomeScreenWidgetProvider : HomeWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray, widgetData: SharedPreferences) {
         appWidgetIds.forEach { widgetId ->
             val views = RemoteViews(context.packageName, R.layout.widget_layout).apply {
-                println("reached");
+                //println("reached");
                 // Open App on Widget Click
                 val pendingIntent = HomeWidgetLaunchIntent.getActivity(context,
                         MainActivity::class.java)
@@ -23,7 +23,7 @@ class HomeScreenWidgetProvider : HomeWidgetProvider() {
                 val yearsLeft = widgetData.getString("yearsLeft","...");
                
                 var yearsLeftText = "value2 is: $yearsLeft"
-                println("All SharedPreferences: ${widgetData.getAll()}")
+                //println("All SharedPreferences: ${widgetData.getAll()}")
                 
 
                 setTextViewText(R.id.tv_yearsLeft, yearsLeftText)
