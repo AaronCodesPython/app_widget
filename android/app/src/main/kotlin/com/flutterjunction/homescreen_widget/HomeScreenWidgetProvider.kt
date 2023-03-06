@@ -22,7 +22,7 @@ class HomeScreenWidgetProvider : HomeWidgetProvider() {
                 //val yearsLeft =  0.0f;
                 val yearsLeft = widgetData.getString("yearsLeft","...");
                
-                var yearsLeftText = "value2 is: $yearsLeft"
+                var yearsLeftText = "$yearsLeft"
                 //println("All SharedPreferences: ${widgetData.getAll()}")
                 
 

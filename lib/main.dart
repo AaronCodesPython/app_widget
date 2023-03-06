@@ -4,23 +4,33 @@ import "./centerTextcomponent.dart" as CTC;
 import "./customBottomSheet.dart";
 import 'settingsScreen_template.dart';
 import "./HelpScreend.dart";
-
+import "./UpdateWidget.dart";
 import 'package:flutter/material.dart';
 
 import "./AskBirthDay.dart" as AB;
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
-void fireAlarm() {
-  print("Fired Alarm at ${DateTime.now()}");
+void fireAlarm() async {
+  print("Fired Alarm at ${DateTime.now()}WDWDWDWDWDWDWDWDWDWD");
+  UPDATEWIDGET();
+  // List<double?> data = await UPDATEWIDGET(mainContext!);
+  print("executed");
 }
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized(); //NEW
   //HomeWidget.registerBackgroundCallback(CTC.backgroundCallback);
-  await AndroidAlarmManager.initialize();
-  await AndroidAlarmManager.periodic(Duration(seconds: 60), 0, CTC.UPDATE);
   runApp(const MyApp());
+}
+
+void startBackground() async {
+  await AndroidAlarmManager.initialize();
+  AndroidAlarmManager.periodic(
+    Duration(seconds: 60),
+    1,
+    fireAlarm,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -28,6 +38,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    startBackground();
+
     return Stack(textDirection: TextDirection.ltr, children: [
       MaterialApp(
         title: 'Days left',
@@ -92,3 +104,10 @@ class _MyHomePageState extends State<mainComponent> {
     );
   }
 }
+
+///////////////////////////////////////////////////
+///import 'dart:async';
+/*import 'package:flutter/cupertino.dart';
+import "./AskBirthDay.dart" as AB;
+import 'package:home_widget/home_widget.dart';
+*/

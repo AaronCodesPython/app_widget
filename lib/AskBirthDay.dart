@@ -66,7 +66,7 @@ Future<bool> BirtdaySet(BuildContext context) async {
   }
 }
 
-read(BuildContext context) async {
+Future<String?> read() async {
   try {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/date_saved.txt');
