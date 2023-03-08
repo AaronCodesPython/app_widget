@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import "./AskBirthDay.dart" as AB;
+import 'ask_birthday.dart' as AB;
 import 'package:home_widget/home_widget.dart';
-import "./settingsScreen_template.dart" as SSC;
 import 'package:shared_preferences/shared_preferences.dart';
 
 double? yearsLeft;
@@ -36,7 +35,7 @@ Future<void> updateAppWidget() async {
   }
 }
 
-Future<List<double?>> UPDATEWIDGET() async {
+Future<List<double?>> updateWidget() async {
   //removed if(mounted)
 
   List<String> data = await idk();
@@ -45,7 +44,6 @@ Future<List<double?>> UPDATEWIDGET() async {
   updateAppWidget();
 
   return [yearsLeft, percentDone != null ? percentDone! : null];
-  //print(MAIN.yearsLeft);
 }
 
 Future<List<String>> idk() async {

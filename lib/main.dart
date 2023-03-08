@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:home_widget/home_widget.dart';
-import "./centerTextcomponent.dart" as CTC;
+import "./centerTextcomponent.dart" as ctc;
 import "./customBottomSheet.dart";
 import 'settingsScreen_template.dart';
 import "./HelpScreend.dart";
 import "./UpdateWidget.dart";
-import 'package:flutter/material.dart';
 
-import "./AskBirthDay.dart" as AB;
+import 'ask_birthday.dart' as ab;
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 void fireAlarm() async {
-  print("Fired Alarm at ${DateTime.now()}WDWDWDWDWDWDWDWDWDWD");
-  UPDATEWIDGET();
-  // List<double?> data = await UPDATEWIDGET(mainContext!);
-  print("executed");
+  updateWidget();
 }
 
 void main() {
@@ -27,7 +22,7 @@ void main() {
 void startBackground() async {
   await AndroidAlarmManager.initialize();
   AndroidAlarmManager.periodic(
-    Duration(seconds: 60),
+    const Duration(seconds: 60),
     1,
     fireAlarm,
   );
@@ -44,21 +39,23 @@ class MyApp extends StatelessWidget {
       MaterialApp(
         title: 'Days left',
         theme: ThemeData(
-            scaffoldBackgroundColor: Colors.black87,
+            scaffoldBackgroundColor: Color.fromRGBO(27, 36, 48, 1),
             textTheme: const TextTheme(
                 displayMedium: TextStyle(
                     fontSize: 25,
+                    fontFamily: "Taner",
                     fontWeight: FontWeight.w600,
                     color: Colors.white),
                 displayLarge: TextStyle(
+                    fontFamily: "Taner",
                     fontSize: 52,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white))),
+                    color: Color.fromRGBO(214, 213, 168, 1)))),
 
         initialRoute: '/', // default is '/'
         routes: {
-          '/': (ctx) => const mainComponent(title: 'Days left'),
-          SettingsScreen.routeName: (ctx) => SettingsScreen(),
+          '/': (ctx) => const MainComponent(title: 'Days left'),
+          SettingsScreen.routeName: (ctx) => const SettingsScreen(),
           HelpScreen.routeName: (ctx) => HelpScreen()
         },
       ),
@@ -66,15 +63,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class mainComponent extends StatefulWidget {
-  const mainComponent({super.key, required this.title});
+class MainComponent extends StatefulWidget {
+  const MainComponent({super.key, required this.title});
   final String title;
 
   @override
-  State<mainComponent> createState() => _MyHomePageState();
+  State<MainComponent> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<mainComponent> {
+class _MyHomePageState extends State<MainComponent> {
   @override
   void initState() {
     super.initState();
@@ -82,24 +79,25 @@ class _MyHomePageState extends State<mainComponent> {
 
   @override
   Widget build(BuildContext context) {
-    final _scaffoldKey = GlobalKey<ScaffoldState>();
-    AB.BirtdaySet(context)
-        .then((value) => value ? false : AB.AskBirtday(context));
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+    ab
+        .birtdaySet(context)
+        .then((value) => value ? false : ab.askBirtday(context));
     return Scaffold(
-      key: _scaffoldKey,
+      key: scaffoldKey,
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: () {
               CustomBottomWidget(context);
             },
-            icon: Icon(Icons.more_horiz),
+            icon: const Icon(Icons.more_horiz),
           ),
         ],
-        backgroundColor: Colors.black87,
+        backgroundColor: Color.fromRGBO(27, 36, 48, 1),
       ),
-      body: Center(
-        child: CTC.TimerWidget(),
+      body: const Center(
+        child: ctc.TimerWidget(),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

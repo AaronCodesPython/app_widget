@@ -1,16 +1,14 @@
 import "package:flutter/cupertino.dart";
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import "./AskBirthDay.dart";
+import 'ask_birthday.dart';
 
 var prefs;
 
 enum Mode { write, read }
 
 Future<bool> loadPref({bool? val, String? name, Mode? mode}) async {
-  print("loadpref");
   prefs = await SharedPreferences.getInstance();
-  print(prefs.toString());
   if (mode == Mode.write) {
     if (prefs.getBool(name) == null) {
       prefs.setBool(name, true);
@@ -19,12 +17,14 @@ Future<bool> loadPref({bool? val, String? name, Mode? mode}) async {
     await prefs.setBool(name, val);
     return false;
   } else {
-    return prefs.getBool(name);
+    return prefs.getBool(name) ?? true;
   }
 }
 
 class SettingsScreen extends StatefulWidget {
   static String routeName = "SettingsScreen";
+
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -35,13 +35,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-            child: ListView(children: [
+        child: ListView(children: [
           TextButton(
             onPressed: () {
-              AskBirtday(context);
+              askBirtday(context);
             },
-            style: ButtonStyle(),
+            style: const ButtonStyle(),
             child: const Text(
               "Change Birthday",
               style: TextStyle(color: Colors.white),
@@ -64,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             //isChecked = !isChecked;
                           });
                         },
-                        trackColor: Color.fromRGBO(38, 38, 38, 1),
+                        trackColor: const Color.fromRGBO(38, 38, 38, 1),
                       );
                     } else {
                       return const SizedBox(
@@ -98,16 +97,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           //isChecked = !isChecked;
                         });
                       },
-                      trackColor: Color.fromRGBO(38, 38, 38, 1),
+                      trackColor: const Color.fromRGBO(38, 38, 38, 1),
                     );
                   } else {
-                    return SizedBox(
+                    return const SizedBox(
                       width: 0,
                       height: 0,
                     );
                   }
                 }),
-            SizedBox(
+            const SizedBox(
               width: 30,
               height: 0,
             ),
@@ -116,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: Theme.of(context).textTheme.displayMedium,
             ),
           ]),
-        ])),
+        ]),
       ),
     );
   }

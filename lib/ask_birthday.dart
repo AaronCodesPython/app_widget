@@ -1,18 +1,16 @@
-import './centerTextcomponent.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
-void AskBirtday(BuildContext context) async {
+void askBirtday(BuildContext context) async {
   final dateController = TextEditingController();
-  bool bset = await BirtdaySet(context);
+  bool bset = await birtdaySet(context);
   showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-              title: Text("Hey New User!"),
-              content: Text("Please enter your birthday to continue!"),
+              title: const Text("Hey New User!"),
+              content: const Text("Please enter your birthday to continue!"),
               actions: <Widget>[
                 TextField(
                   readOnly: true,
@@ -34,14 +32,14 @@ void AskBirtday(BuildContext context) async {
                   children: [
                     bset
                         ? TextButton(
-                            child: Text("Cancel"),
+                            child: const Text("Cancel"),
                             onPressed: () {
                               Navigator.pushNamedAndRemoveUntil(
                                   context, "/", (route) => false);
                             })
-                        : SizedBox(height: 0, width: 0),
+                        : const SizedBox(height: 0, width: 0),
                     TextButton(
-                        child: Text("Submit"),
+                        child: const Text("Submit"),
                         onPressed: () {
                           String date = dateController.text;
                           _save(date);
@@ -54,14 +52,13 @@ void AskBirtday(BuildContext context) async {
               ]));
 }
 
-Future<bool> BirtdaySet(BuildContext context) async {
+Future<bool> birtdaySet(BuildContext context) async {
   try {
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/date_saved.txt');
     String text = await file.readAsString();
     return true;
   } catch (e) {
-    print(e);
     return false;
   }
 }
@@ -73,10 +70,7 @@ Future<String?> read() async {
     String text = await file.readAsString();
     return text;
   } catch (e) {
-    print(e);
-    print("no birthday set");
     //if(e.toString().contains("PathNotFoundException")){
-    //print("ASKS AGAIN");
     //AskBirtday(context);
     //}
     return null;
@@ -86,9 +80,7 @@ Future<String?> read() async {
 _save(String text) async {
   final directory = await getApplicationDocumentsDirectory();
   final file = File('${directory.path}/date_saved.txt');
-  print("PATH:${directory.path}/date_saved.txt");
   await file.writeAsString(text);
-  print('saved');
 }
 
 
