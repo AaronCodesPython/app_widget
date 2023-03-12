@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import "./UpdateWidget.dart" as upd;
 import "./settingsscreen_template.dart" as ssc;
-
+import "./MainTextBox.dart";
 double? yearsL;
 double? percentDone;
 var prefs;
+
+enum ShownValue{
+  year, percent    
+}
 
 class TimerWidget extends StatefulWidget {
   const TimerWidget({super.key});
@@ -33,45 +37,13 @@ class _TimerWidgetState extends State<TimerWidget> {
       });
     });
 
-    return Column(
-      children: [
-        FutureBuilder(
-            future: ssc.loadPref(name: "isChecked", mode: ssc.Mode.read),
-            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-              if (snapshot.hasData) {
-                return snapshot.data!
-                    ? Text(
-                        yearsL == null
-                            ? "loading..."
-                            : "${yearsL.toString()} years left",
-                        style: Theme.of(context).textTheme.displayLarge)
-                    : const SizedBox(
-                        height: 0,
-                        width: 0,
-                      );
-              } else {
-                return const Text("loading...");
-              }
-            }),
-        FutureBuilder(
-            future: ssc.loadPref(name: "isChecked2", mode: ssc.Mode.read),
-            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-              if (snapshot.hasData) {
-                return snapshot.data!
-                    ? Text(
-                        yearsL == null
-                            ? "loading..."
-                            : "${percentDone.toString()} percent done",
-                        style: Theme.of(context).textTheme.displayLarge)
-                    : const SizedBox(
-                        height: 0,
-                        width: 0,
-                      );
-              } else {
-                return const Text("loading...");
-              }
-            }),
-      ],
+    return Center(
+      child: Column(
+        children: [
+          MainTextBox(ShownValue.year, yearsL:yearsL!,nameProp: "isChecked", percentDone: percentDone,),
+          MainTextBox(ShownValue.percent, yearsL: yearsL!,nameProp: "isChecked2", percentDone: percentDone)
+        ],
+      ),
     );
   }
 }

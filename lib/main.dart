@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       MaterialApp(
         title: 'Days left',
         theme: ThemeData(
-            scaffoldBackgroundColor: Color.fromRGBO(27, 36, 48, 1),
+            scaffoldBackgroundColor: Color.fromRGBO(17,17,17,1),
             textTheme: const TextTheme(
                 displayMedium: TextStyle(
                     fontSize: 25,
@@ -94,11 +94,10 @@ class _MyHomePageState extends State<MainComponent> {
             icon: const Icon(Icons.more_horiz),
           ),
         ],
-        backgroundColor: Color.fromRGBO(27, 36, 48, 1),
+        backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
       ),
-      body: const Center(
-        child: ctc.TimerWidget(),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: const Center(child: ctc.TimerWidget()),
+       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

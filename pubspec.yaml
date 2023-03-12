@@ -81,7 +81,7 @@ flutter:
   fonts:
     - family: Taner
       fonts:
-        - asset: fonts/TanerArdaliAntikorMonoRegular.ttf
+        - asset: fonts/DS-DIGI.ttf
           style: normal
 #       - asset: fonts/Schyler-Italic.ttf
 #         style: italic
