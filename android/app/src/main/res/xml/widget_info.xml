@@ -4,4 +4,7 @@
     android:minHeight="200dp"
     android:minResizeWidth="200dp"
     android:minResizeHeight="150dp"
-    android:widgetCategory="home_screen" />
+    android:widgetCategory="home_screen" 
+    />
+
+    

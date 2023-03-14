@@ -7,18 +7,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000">
+        android:background="#1F1E1D">
 
         <TextView
             android:id="@+id/tv_yearsLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:fontFamily="@font/my_font"
             android:gravity="center_horizontal"
             android:padding="12dp"
             android:text="loading..."
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textAppearance="@android:style/TextAppearance.Material.Body1"
+            android:textColor="#D6D5A8"
+            android:textSize="20sp" />
 
     </RelativeLayout>
 </FrameLayout>

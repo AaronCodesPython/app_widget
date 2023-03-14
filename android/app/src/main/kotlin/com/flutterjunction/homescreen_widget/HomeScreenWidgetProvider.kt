@@ -26,7 +26,7 @@ class HomeScreenWidgetProvider : HomeWidgetProvider() {
                 //println("All SharedPreferences: ${widgetData.getAll()}")
                 
 
-                setTextViewText(R.id.tv_yearsLeft, yearsLeftText)
+                setTextViewText(R.id.tv_yearsLeft, yearsLeftText, )
                 //setTextViewText(150, "120lol")
 
 
